@@ -108,6 +108,7 @@ def pressButton(xbox_button):
 	GAMEPAD.update()
 	time.sleep(0.2)
 
+# TODO: optimize this don't need 2
 def mashAttack(min):
 	print("Mashing Attack")
 	t_end = time.time() + 60 * min
@@ -118,6 +119,11 @@ def mashAButton(seconds):
 	t_end = time.time() + seconds
 	while time.time() < t_end:
 		pressButton("A")
+
+def mashButton(button, seconds):
+	t_end = time.time() + seconds
+	while time.time() < t_end:
+		pressButton(button)
 	
 def start_end_farm(key):
 	if key == KeyCode(char='9'):
@@ -130,6 +136,50 @@ def moveUp(seconds):
 	time.sleep(seconds)
 	GAMEPAD.left_joystick_float(x_value_float=0.0, y_value_float=0.0)
 	GAMEPAD.update()
+
+def teleportKnick():
+	print("Teleporting to knickknack")
+	# open up the shortcut menu
+	print("Opening shortcut")
+	GAMEPAD.left_trigger_float(value_float=1.0)
+	GAMEPAD.update()
+	time.sleep(1.0)
+	GAMEPAD.left_trigger_float(value_float=0.0)
+	GAMEPAD.update()
+
+	# press on fast travel
+	pressButton("A")
+	# press on teleport to knickknack
+	pressButton("DOWN")
+	pressButton("DOWN")
+	pressButton("A")
+	time.sleep(1.5)
+
+	print("Walking to knickknack")
+	# walk 1 second up
+	moveUp(1)
+	# interact with the quest counter
+	pressButton("Y")
+	time.sleep(2)
+
+	gambaSigils()
+
+def gambaSigils():
+	print("Gamba gamba")
+	# down 3 then down 2
+	pressButton("DOWN")
+	pressButton("DOWN")
+	pressButton("DOWN")
+	pressButton("A")
+	pressButton("DOWN")
+	pressButton("DOWN")
+	print("TIME TO GAMBA for 2 MIN")
+	mashAButton(120)
+
+	# done with gamba
+	mashButton("B", 6)
+	time.sleep(2)
+
 
 if __name__ == '__main__':
 	# Collect all event until released
@@ -146,6 +196,10 @@ if __name__ == '__main__':
 		print("Back in town #" + str(full_run))
 		# sleep 10 seconds to account for load times on repeat
 		time.sleep(10)
+		if (total_runs % 30 == 0) and (total_runs != 0):
+			print("Been 30 runs TIME TO GAMBA")
+			teleportKnick()
+			
 		teleportToQuest()
 		if full_run < 1:
 			startSlimeQuest()
