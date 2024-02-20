@@ -73,6 +73,7 @@ def startSlimeQuest():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
+	print("Waiting 22 seconds for load")
 	time.sleep(22)
 
 def startSlimeSubsequent():
@@ -97,8 +98,68 @@ def startSlimeSubsequent():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
+	print("Waiting 22 seconds for load")
 	time.sleep(22)
 
+def startFortitudeQuest():
+	# press on undertake quest
+	pressButton("A")
+	# go to by difficulty
+	pressButton("RB")
+	# default on easy diff so go down to extreme
+	pressButton("DOWN")
+	# press on extreme difficulty
+	pressButton("A")
+	# down 3 times
+	pressButton("DOWN")
+	pressButton("DOWN")
+	pressButton("DOWN")
+	# press on pillar quest
+	pressButton("A")
+	# accept the quest
+	pressButton("A")
+	# press closed party
+	pressButton("A")
+	time.sleep(1.5)
+
+	# ready up for quest
+	pressButton("X")
+	time.sleep(0.5)
+	# ready and depart to quest
+	pressButton("A")
+
+	# sleep for 22 seconds then get into fight to account for
+	# loading + intro 
+	print("Waiting 22 seconds for load")
+	time.sleep(22)
+
+def startFortitudeSubsequent():
+	# press on undertake quest
+	pressButton("A")
+	# press on extreme difficulty
+	pressButton("A")
+	# down 3 times
+	pressButton("DOWN")
+	pressButton("DOWN")
+	pressButton("DOWN")
+	# press on pillar quest
+	pressButton("A")
+	# accept the quest
+	pressButton("A")
+	# press closed party
+	pressButton("A")
+	time.sleep(1.5)
+
+	# ready up for quest
+	pressButton("X")
+	time.sleep(0.5)
+	# ready and depart to quest
+	pressButton("A")
+
+	# sleep for 22 seconds then get into fight to account for
+	# loading + intro 
+	print("Waiting 22 seconds for load")
+	time.sleep(22)
 
 def pressButton(xbox_button):
 	GAMEPAD.press_button(button=BUTTON_LIST[xbox_button])
@@ -185,7 +246,19 @@ if __name__ == '__main__':
 	# Collect all event until released
 	# wait 3 seconds before starting
 	# press a button to wake the device up
-	print("Waiting 5 seconds")
+	print("Ranged main character required to be optimal")
+	print("Recommended to set the game to 720p 30fps if you go afk")
+	print("Make sure the quest board is in default state before running.")
+	print("Choose a farm. In the terminal, type 1 then press enter to farm slimes for example\n")
+	farm_mode = input("Slimepede Farm [1] | Fortitude Crystal Farm [2]\n")
+	if farm_mode == '1':
+		print("Starting Slimepede Farm")
+	elif farm_mode == '2':
+		print("Starting Fortitude Crystal Farm")
+	else:
+		print("1 or 2 chief cause I ain't writing code for other exceptions right now. Restart it")
+	
+	print("Waiting 5 seconds to alt tab into the game")
 	time.sleep(5)
 	print("Button checking")
 	pressButton("A")
@@ -194,21 +267,35 @@ if __name__ == '__main__':
 	total_runs = 0
 	while True:
 		print("Back in town #" + str(full_run))
+		print("Waiting 10 seconds to account for loads")
 		# sleep 10 seconds to account for load times on repeat
 		time.sleep(10)
 		if (total_runs % 30 == 0) and (total_runs != 0):
 			print("Been 30 runs TIME TO GAMBA")
 			teleportKnick()
-			
-		teleportToQuest()
-		if full_run < 1:
-			startSlimeQuest()
-		else:
-			startSlimeSubsequent()
 		
-		print("Starting Quest mashing now")
+		teleportToQuest()
+		if farm_mode == '1':
+			if full_run < 1:
+				startSlimeQuest()
+			else:
+				startSlimeSubsequent()
+		
+		elif farm_mode == '2':
+			if full_run < 1:
+				startFortitudeQuest()
+			else:
+				startFortitudeSubsequent()
+		else:
+			print("Restart program buddy ain't working choose 1 or 2")
+		
+		print("Starting Quest")
+		print("Moving up 3 seconds")
 		moveUp(3)
-		mashAttack(2.99)
+		if farm_mode == '1':
+			mashAttack(2.99)
+		elif farm_mode == '2':
+			mashAttack(3.99)
 		total_runs = total_runs + 1
 		print("Quest Complete")
 		print("Completed fight #" + str(total_runs))
@@ -234,16 +321,20 @@ if __name__ == '__main__':
 		while i < 9:
 			# wait for time to load level
 			time.sleep(12)
-			print("Done loading. Starting fight #" + str(total_runs))
+			#TODO: This is +1 higher than it actually is
+			print("Done loading. Starting fight")
 			print("Moving up 3 seconds")
 			moveUp(3)
-			mashAttack(2.99)
-			print("Quest Complete. Waiting 30 seconds")
+			if farm_mode == '1':
+				mashAttack(2.99)
+			elif farm_mode == '2':
+				mashAttack(3.99)
+			total_runs = total_runs + 1
+			print("Quest #" + str(total_runs) + "Complete. Waiting 30 seconds")
 			# end of level now wait for battle results screen
 			time.sleep(30)
 			# mash A to get through results screen faster
 			print("Mashing A to go fast\n")
 			mashAButton(8)
-			total_runs = total_runs + 1
 			i = i + 1
 		full_run = full_run + 1
