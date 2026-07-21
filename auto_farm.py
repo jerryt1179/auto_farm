@@ -1496,9 +1496,7 @@ if __name__ == '__main__':
 					i = i + 1
 					IS_FIGHT_FINISHED = False
 				except Exception as e:
-					logger.exception("buhhh... Something went wrong.. Check the logs for details.")
-     
-				finally:
+					logger.exception("\nbuhhh... Something went wrong.. Check the logs for details.")
 					logger.info("Exiting the program gracefully... buhhh")
 					time.sleep(3)
 					sys.exit()
