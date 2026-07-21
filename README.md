@@ -49,7 +49,8 @@ pip install -r requirements.txt
 1. Create a new folder containing:
    - The script (`.py` or `.exe`)
    - The correct resolution images used for image detection
-**NOTE:** The folder should contain the script (`.py` or `.exe`) and 5 .png images
+   
+   **NOTE:** The folder should contain the script (`.py` or `.exe`) and 5 .png images
 
 2. Launch the game.
 
