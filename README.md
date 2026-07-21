@@ -81,7 +81,7 @@ Changing the folder name or image file names will cause image detection to fail.
    - The script (`.py` or `.exe`)
    - The correct resolution images used for image detection
    
-   **NOTE:** The folder should contain the script (`.py` or `.exe`) and 5 .png images
+   **NOTE:** The folder should contain the script (`.py` or `.exe`) and a folder with 5 .png images. Reference File structure section above.
 
 2. Launch the game.
 
