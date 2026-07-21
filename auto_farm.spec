@@ -1,14 +1,12 @@
 # -*- mode: python ; coding: utf-8 -*-
-from PyInstaller.utils.hooks import collect_dynamic_libs
-
-binaries = []
-binaries += collect_dynamic_libs('vgamepad')
-
 
 a = Analysis(
     ['auto_farm.py'],
     pathex=[],
-    binaries=binaries,
+    binaries=[
+        ('env/Lib/site-packages/vgamepad/win/vigem/client/x64/ViGEmClient.dll',
+         'vgamepad/win/vigem/client/x64')
+    ],
     datas=[],
     hiddenimports=[],
     hookspath=[],
@@ -16,7 +14,9 @@ a = Analysis(
     runtime_hooks=[],
     excludes=[],
     noarchive=False,
+    optimize=0,
 )
+
 pyz = PYZ(a.pure)
 
 exe = EXE(
