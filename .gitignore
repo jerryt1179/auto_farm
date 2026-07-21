@@ -6,3 +6,4 @@ build/
 auto_farm.spec
 pyvenv.cfg
 auto_farm_logs.txt
+env/
