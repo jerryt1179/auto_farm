@@ -44,6 +44,37 @@ source env/Scripts/activate
 pip install -r requirements.txt
 ```
 
+## File Structure
+
+The script requires the image folder structure to remain the same for image detection to work.
+
+Create a folder (recommended name: `auto_farm`) containing the following:
+
+```
+auto_farm/
+│
+├── auto_farm.exe (or auto_farm.py)
+│
+└── Granblue_ImageSearch/
+    ├── battle_results.png
+    ├── collect_treasure.png
+    ├── main_menu.png
+    ├── post_battle_status.png
+    └── time_left.png
+```
+
+> [!IMPORTANT]
+> The folder name **`Granblue_ImageSearch`** must be kept exactly as shown.
+>
+> The PNG file names must also match exactly:
+> - `battle_results.png`
+> - `collect_treasure.png`
+> - `main_menu.png`
+> - `post_battle_status.png`
+> - `time_left.png`
+
+Changing the folder name or image file names will cause image detection to fail.
+
 ## Usage
 
 1. Create a new folder containing:

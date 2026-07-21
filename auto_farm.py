@@ -851,7 +851,7 @@ def printTest():
 
 def isTest():
 	logger.info("Testing image serach")
-	pos = imagesearch_loop("./Granblue ImageSearch/battle_results.png", timesample=1, precision=0.75)
+	pos = imagesearch_loop("./Granblue_ImageSearch/battle_results.png", timesample=1, precision=0.75)
 	logger.info("position : ", pos[0], pos[1])
 	global IS_FIGHT_FINISHED 
 	IS_FIGHT_FINISHED = True
@@ -877,7 +877,7 @@ def luciAttackSpam():
 			i = i + 1
 		logger.info("Should be done with fight since battle_results detected.")
 		# for i in range(5):
-		# 	pos = imagesearch("./Granblue ImageSearch/battle_results.png", precision=0.75)
+		# 	pos = imagesearch("./Granblue_ImageSearch/battle_results.png", precision=0.75)
 		# 	time.sleep(1)
 		# if pos[0] != -1:
 		logger.info("Pressing LEFT in case stuck\n")
@@ -888,7 +888,7 @@ def checkBattleScreen():
 	logger.info("Checking battle results screen\n")
 	global IS_FIGHT_FINISHED
 	while(not IS_FIGHT_FINISHED or pos[0] == -1):
-		pos = imagesearch("./Granblue ImageSearch/battle_results.png", precision=0.75)
+		pos = imagesearch("./Granblue_ImageSearch/battle_results.png", precision=0.75)
 		time.sleep(5)
 	IS_FIGHT_FINISHED = True
 	logger.info("Detected battle results screen")
@@ -929,17 +929,17 @@ def holdBlock():
 
 def checkQuestFinished():
 	logger.info("Checking if we are on battle results screen every 1.0 seconds")
-	# pos = imagesearch("./Granblue ImageSearch/collect_treasure.png", precision=0.75)
-	pos = imagesearch_loop("./Granblue ImageSearch/battle_results.png", timesample=1.0, precision=0.75)
+	# pos = imagesearch("./Granblue_ImageSearch/collect_treasure.png", precision=0.75)
+	pos = imagesearch_loop("./Granblue_ImageSearch/battle_results.png", timesample=1.0, precision=0.75)
 	time.sleep(1.5)
 	# time.sleep(1)
 	# while(pos[0] == -1):
 		# logger.info('searching')
-		# pos = imagesearch("./Granblue ImageSearch/battle_results.png", precision=0.75)
+		# pos = imagesearch("./Granblue_ImageSearch/battle_results.png", precision=0.75)
 		# time.sleep(2)
 		# logger.info("2nd search")
 		# time.sleep(2)
-	#pos = imagesearch_loop("./Granblue ImageSearch/collect_treasure.png", timesample=1.0, precision=0.8)
+	#pos = imagesearch_loop("./Granblue_ImageSearch/collect_treasure.png", timesample=1.0, precision=0.8)
 	logger.info("Battle results/Failure screen detected.")
 	global IS_FIGHT_FINISHED
 	IS_FIGHT_FINISHED = True
@@ -1153,17 +1153,17 @@ if __name__ == '__main__':
 		logger.info("Sleeping for 3 seconds for you to alt tab to game")
 		time.sleep(3)
 		logger.info("Attempting to detect the main menu")
-		pos = imagesearch_loop("./Granblue ImageSearch/main_menu.png", timesample=1.0, precision=0.75)
+		pos = imagesearch_loop("./Granblue_ImageSearch/main_menu.png", timesample=1.0, precision=0.75)
 		logger.info("Detected the main menu we good.\n")
 		
 		logger.info("Start a mission and test if this can detect when it starts and the post battle screen\n")
 		time.sleep(5)
 		logger.info("Begin checking for start of quest. Looking for the time left at top right corner every 1 second\n")
 		time.sleep(2)
-		pos = imagesearch_loop("./Granblue ImageSearch/time_left.png", timesample=1.0, precision=0.75)
+		pos = imagesearch_loop("./Granblue_ImageSearch/time_left.png", timesample=1.0, precision=0.75)
 		logger.info("Time left detected. Will check for post battle results screen now")
 		time.sleep(3)
-		pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=1.0, precision=0.75)
+		pos = imagesearch_loop("./Granblue_ImageSearch/post_battle_status.png", timesample=1.0, precision=0.75)
 		logger.info("Post battle result screen detected. You are good to go.\n\n")
 		logger.info("EXIT OUT AND RESTART PROGRAM\n")
 		time.sleep(5)
@@ -1359,7 +1359,7 @@ if __name__ == '__main__':
 			i = 0
 			while i < 10:
 				logger.info("Starting Luci/behemoth/World. Look for quest timer every half second")
-				pos = imagesearch_loop("./Granblue ImageSearch/time_left.png", timesample=0.5, precision=0.75)
+				pos = imagesearch_loop("./Granblue_ImageSearch/time_left.png", timesample=0.5, precision=0.75)
 				now = datetime.datetime.now()
 				logger.info("Quest timer detected")
 				logger.info("Starting fight")
@@ -1393,7 +1393,7 @@ if __name__ == '__main__':
 					# time.sleep(60)
 					# logger.info("Searching for post battle screen (again if fail)")
 
-					# pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
+					# pos = imagesearch_loop("./Granblue_ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
 					logger.info("Post battle results screen detected.")
 					total_runs = total_runs + 1
 					logger.info("Quest #" + str(total_runs) + " Complete.\n")
@@ -1420,10 +1420,10 @@ if __name__ == '__main__':
 				# 2 - 10 quests should auto repeat
 				else:
 					# logger.info("Looking for battle results screen every second")
-					# pos = imagesearch_loop("./Granblue ImageSearch/battle_results.png", timesample=1, precision=0.8)
+					# pos = imagesearch_loop("./Granblue_ImageSearch/battle_results.png", timesample=1, precision=0.8)
 					# logger.info("Battle results screen detected.")
 					logger.info("Searching for post battle screen (again if fail)")
-					pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
+					pos = imagesearch_loop("./Granblue_ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
 					logger.info("Post battle results screen detected.")
 
 					total_runs = total_runs + 1
@@ -1443,7 +1443,7 @@ if __name__ == '__main__':
 			i = 0
 			while i < 500:
 				logger.info("Starting a quest and just repeating. Look for quest timer every half second")
-				pos = imagesearch_loop("./Granblue ImageSearch/time_left.png", timesample=0.5, precision=0.75)
+				pos = imagesearch_loop("./Granblue_ImageSearch/time_left.png", timesample=0.5, precision=0.75)
 				now = datetime.datetime.now()
 				logger.info("Quest timer detected)")
 				logger.info("Starting fight")
@@ -1466,7 +1466,7 @@ if __name__ == '__main__':
 				
 				# logger.info("Searching for post battle screen (again if fail)")
 				logger.info("Checking for post_battle_status screen every 1.0 seconds")
-				pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
+				pos = imagesearch_loop("./Granblue_ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
 				logger.info("Post battle results screen detected.")
 
 				total_runs = total_runs + 1
@@ -1509,7 +1509,7 @@ if __name__ == '__main__':
 					logger.info("Starting proto. Look for quest timer every half second")
 				if farm_mode == '7':
 					logger.info("Starting triple bosses. Look for quest timer every half second")
-				pos = imagesearch_loop("./Granblue ImageSearch/time_left.png", timesample=0.5, precision=0.75)
+				pos = imagesearch_loop("./Granblue_ImageSearch/time_left.png", timesample=0.5, precision=0.75)
 				logger.info("Quest timer detected at: ", pos[0], pos[1])
 				logger.info("Starting fight")
 				now = datetime.datetime.now()
@@ -1538,7 +1538,7 @@ if __name__ == '__main__':
 				if i == 0:
 					logger.info("Searching for post battle screen (again if fail)")
 
-					pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
+					pos = imagesearch_loop("./Granblue_ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
 					logger.info("Post battle results screen detected.")
 					total_runs = total_runs + 1
 					logger.info("Quest #" + str(total_runs) + " Complete.\n")
@@ -1560,7 +1560,7 @@ if __name__ == '__main__':
 				# 2 - 10 quests should auto repeat
 				else:
 					logger.info("Searching for post battle screen (again if fail)")
-					pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
+					pos = imagesearch_loop("./Granblue_ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
 					logger.info("Post battle results screen detected.")
 
 					total_runs = total_runs + 1
