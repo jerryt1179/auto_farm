@@ -4,6 +4,7 @@ import time
 import datetime
 import logging
 import threading
+import sys
 from pynput.keyboard import Listener, KeyCode
 from python_imagesearch.imagesearch import imagesearch_loop, imagesearch, imagesearch_numLoop
 
@@ -1149,6 +1150,7 @@ if __name__ == '__main__':
 	elif farm_mode == '2':
 		logger.info("Starting Fortitude Crystal Farm")
 	elif farm_mode =='3':
+		# TODO: Add try catch for all screen captures
 		logger.info("Testing screen capture for user")
 		logger.info("Sleeping for 3 seconds for you to alt tab to game")
 		time.sleep(3)
@@ -1443,55 +1445,64 @@ if __name__ == '__main__':
 			i = 0
 			while i < 500:
 				logger.info("Starting a quest and just repeating. Look for quest timer every half second")
-				pos = imagesearch_loop("./Granblue_ImageSearch/time_left.png", timesample=0.5, precision=0.75)
-				now = datetime.datetime.now()
-				logger.info("Quest timer detected)")
-				logger.info("Starting fight")
+				try:
+					pos = imagesearch_loop("./Granblue_ImageSearch/time_left.png", timesample=0.5, precision=0.75)
+					now = datetime.datetime.now()
+					logger.info("Quest timer detected)")
+					logger.info("Starting fight")
 
-				# reset pos and keep looping
-				#pos.clear()
+					# reset pos and keep looping
+					#pos.clear()
 
-				logger.info("Creating MultiThreads")
-				luciAttackThread = threading.Thread(target=luciAttackSpam)
-				# luciBattleScreen = threading.Thread(target=checkBattleScreen)
-				isQuestFinishedThread = threading.Thread(target=checkQuestFinished)
-				luciAttackThread.start()
-				# luciBattleScreen.start()
-				isQuestFinishedThread.start()
+					logger.info("Creating MultiThreads")
+					luciAttackThread = threading.Thread(target=luciAttackSpam)
+					# luciBattleScreen = threading.Thread(target=checkBattleScreen)
+					isQuestFinishedThread = threading.Thread(target=checkQuestFinished)
+					luciAttackThread.start()
+					# luciBattleScreen.start()
+					isQuestFinishedThread.start()
 
-				luciAttackThread.join()
-				# luciBattleScreen.join()
-				isQuestFinishedThread.join()
-				
-				
-				# logger.info("Searching for post battle screen (again if fail)")
-				logger.info("Checking for post_battle_status screen every 1.0 seconds")
-				pos = imagesearch_loop("./Granblue_ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
-				logger.info("Post battle results screen detected.")
+					luciAttackThread.join()
+					# luciBattleScreen.join()
+					isQuestFinishedThread.join()
+					
+					
+					# logger.info("Searching for post battle screen (again if fail)")
+					logger.info("Checking for post_battle_status screen every 1.0 seconds")
+					pos = imagesearch_loop("./Granblue_ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
+					logger.info("Post battle results screen detected.")
 
-				total_runs = total_runs + 1
-				logger.info("Quest #" + str(total_runs) + " Complete.\n")
-				
-				time.sleep(3)
-				if i == 0:
-					logger.info("First quest. Pressing repeat quest")
-					logger.info("Trying to press X AND A")
-					pressButton("X")
-					time.sleep(1)
-					pressButton("A")
-				else:
-					logger.info("Trying to press UP AND A")
-					pressButton("UP")
-					time.sleep(1)
-					pressButton("A")
-				# mash A to get through results screen faster
-				# logger.info("Mashing A to go fast\n")
-				mashAButton(8)
-				# pressButton("A")
-				logger.info("Loading 10 seconds to wait")
-				time.sleep(10)
-				i = i + 1
-				IS_FIGHT_FINISHED = False
+					total_runs = total_runs + 1
+					logger.info("Quest #" + str(total_runs) + " Complete.\n")
+					
+					time.sleep(3)
+					if i == 0:
+						logger.info("First quest. Pressing repeat quest")
+						logger.info("Trying to press X AND A")
+						pressButton("X")
+						time.sleep(1)
+						pressButton("A")
+					else:
+						logger.info("Trying to press UP AND A")
+						pressButton("UP")
+						time.sleep(1)
+						pressButton("A")
+					# mash A to get through results screen faster
+					# logger.info("Mashing A to go fast\n")
+					mashAButton(8)
+					# pressButton("A")
+					logger.info("Loading 10 seconds to wait")
+					time.sleep(10)
+					i = i + 1
+					IS_FIGHT_FINISHED = False
+				except Exception as e:
+					logger.exception("buhhh... Something went wrong.. Check the logs for details.")
+     
+				finally:
+					logger.info("Exiting the program gracefully... buhhh")
+					time.sleep(3)
+					sys.exit()
+
 
 
 		elif farm_mode == '5' or farm_mode == '6' or farm_mode == '7':
