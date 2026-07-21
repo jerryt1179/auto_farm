@@ -2,6 +2,7 @@ import vgamepad as vg
 import tkinter as tk
 import time
 import datetime
+import logging
 import threading
 from pynput.keyboard import Listener, KeyCode
 from python_imagesearch.imagesearch import imagesearch_loop, imagesearch, imagesearch_numLoop
@@ -17,6 +18,7 @@ BUTTON_LIST = {
 	"LSB": vg.XUSB_BUTTON.XUSB_GAMEPAD_LEFT_THUMB,
     "RSB": vg.XUSB_BUTTON.XUSB_GAMEPAD_RIGHT_THUMB,
 	"START": vg.XUSB_BUTTON.XUSB_GAMEPAD_START,
+	"BACK": vg.XUSB_BUTTON.XUSB_GAMEPAD_BACK,
 	"UP": vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_UP,
 	"DOWN": vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_DOWN,
 	"LEFT": vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_LEFT,
@@ -25,10 +27,31 @@ BUTTON_LIST = {
 START_END = False
 IS_FIGHT_FINISHED = False
 
+# Create a logger
+logger = logging.getLogger('logger')
+logger.setLevel(logging.DEBUG)
+
+# Create a formatter to define the log format
+formatter = logging.Formatter('%(asctime)s - %(message)s')
+
+# Create a file handler to write logs to a file
+file_handler = logging.FileHandler('auto_farm_logs.txt')
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(formatter)
+
+# Create a stream handler to logger.info logs to the console
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)  # You can set the desired log level for console output
+console_handler.setFormatter(formatter)
+
+# Add the handlers to the logger
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
+
 def teleportToQuest():
-	print("Teleporting to quest counter")
+	logger.info("Teleporting to quest counter")
 	# open up the shortcut menu
-	print("Opening shortcut")
+	logger.info("Opening shortcut")
 	GAMEPAD.left_trigger_float(value_float=1.0)
 	GAMEPAD.update()
 	time.sleep(1.0)
@@ -41,7 +64,7 @@ def teleportToQuest():
 	pressButton("A")
 	time.sleep(1.5)
 
-	print("Walking to quest board")
+	logger.info("Walking to quest board")
 	# walk 1 second up to counter
 	GAMEPAD.left_joystick_float(x_value_float=0.0, y_value_float=1.0)
 	GAMEPAD.update()
@@ -79,7 +102,7 @@ def startSlimeQuest():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 26 seconds for load")
+	logger.info("Waiting 26 seconds for load")
 	time.sleep(26)
 
 def startSlimeSubsequent():
@@ -104,8 +127,132 @@ def startSlimeSubsequent():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 26 seconds for load")
+	logger.info("Waiting 26 seconds for load")
 	time.sleep(26)
+
+def startNewSlimeQuest():
+	# press on undertake quest
+	pressButton("A")
+	time.sleep(0.5)
+	# go to by difficulty
+	pressButton("RB")
+	# default easy/normal difficulty so go left
+	pressButton("LEFT")
+	# press on fatebreaker difficulty
+	pressButton("A")
+	# default on choas++ so go left once
+	pressButton("LB")
+	# go up one
+	pressButton("UP")
+	pressButton("LEFT")
+	pressButton("DOWN")
+	pressButton("DOWN")
+	# press on the quest
+	pressButton("A")
+	# accept the quest
+	pressButton("A")
+	# press closed party
+	pressButton("A")
+	time.sleep(1.5)
+
+	# ready up for quest
+	pressButton("X")
+	time.sleep(0.5)
+	# ready and depart to quest
+	pressButton("A")
+
+	# sleep for 22 seconds then get into fight to account for
+	# loading + intro 
+	logger.info("Waiting 10 seconds for load")
+	time.sleep(10)
+	
+def startNewSlimeSubsequent():
+	# press on undertake quest
+	pressButton("A")
+	time.sleep(0.5)
+	# press on fatebreaker diff
+	pressButton("A")
+	# press on revenge of the ooze
+	pressButton("A")
+	# press on accept quest
+	pressButton("A")
+	# press on closed party
+	pressButton("A")
+	time.sleep(1.5)
+
+	# ready up for quest
+	pressButton("X")
+	time.sleep(0.5)
+	# ready and depart to quest
+	pressButton("A")
+
+	# sleep for 22 seconds then get into fight to account for
+	# loading + intro 
+	logger.info("Waiting 10 seconds for load")
+	time.sleep(10)
+
+def startWorldQuest():
+	# press on undertake quest
+	pressButton("A")
+	time.sleep(0.5)
+	# go to by difficulty
+	pressButton("RB")
+	# default easy/normal difficulty so go left
+	pressButton("LEFT")
+	# press on fatebreaker difficulty
+	pressButton("A")
+	# default on choas++ so go left once
+	# pressButton("LB")
+	# go up one
+	pressButton("UP")
+
+	pressButton("UP")
+	pressButton("UP")
+	pressButton("UP")
+	pressButton("UP")
+	# press on the quest
+	pressButton("A")
+	# accept the quest
+	pressButton("A")
+	# press closed party
+	pressButton("A")
+	time.sleep(3)
+
+	# ready up for quest
+	pressButton("X")
+	time.sleep(0.5)
+	# ready and depart to quest
+	pressButton("A")
+
+	# sleep for 22 seconds then get into fight to account for
+	# loading + intro 
+	logger.info("Waiting 10 seconds for load")
+	time.sleep(10)
+
+def startWorldSubsequentQuest():
+	# press on undertake quest
+	pressButton("A")
+	time.sleep(0.5)
+	# press on fatebreaker diff
+	pressButton("A")
+	# press on rthe world quest
+	pressButton("A")
+	# press on accept quest
+	pressButton("A")
+	# press on closed party
+	pressButton("A")
+	time.sleep(3)
+
+	# ready up for quest
+	pressButton("X")
+	time.sleep(0.5)
+	# ready and depart to quest
+	pressButton("A")
+
+	# sleep for 22 seconds then get into fight to account for
+	# loading + intro 
+	logger.info("Waiting 10 seconds for load")
+	time.sleep(10)
 
 def startFortitudeQuest():
 	# press on undertake quest
@@ -136,7 +283,7 @@ def startFortitudeQuest():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 24 seconds for load")
+	logger.info("Waiting 24 seconds for load")
 	time.sleep(24)
 
 def startFortitudeSubsequent():
@@ -164,7 +311,7 @@ def startFortitudeSubsequent():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 22 seconds for load")
+	logger.info("Waiting 22 seconds for load")
 	time.sleep(22)
 
 def startLuciliusQuest():
@@ -176,7 +323,11 @@ def startLuciliusQuest():
 	pressButton("UP")
 	# press on proud difficulty
 	pressButton("A")
-	# UP 1 time
+	# UP 5 time
+	pressButton("UP")
+	pressButton("UP")
+	pressButton("UP")
+	pressButton("UP")
 	pressButton("UP")
 	# press on luci quest
 	pressButton("A")
@@ -194,7 +345,7 @@ def startLuciliusQuest():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 24 seconds for load")
+	logger.info("Waiting 24 seconds for load")
 	time.sleep(24)
 
 def startLuciliusSubsequent():
@@ -203,7 +354,7 @@ def startLuciliusSubsequent():
 	# press on proud difficulty
 	pressButton("A")
 	# up to go to bottom of list
-	pressButton("UP")
+	# pressButton("UP")
 	
 	# press on luci quest
 	pressButton("A")
@@ -221,8 +372,126 @@ def startLuciliusSubsequent():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 22 seconds for load")
+	logger.info("Waiting 22 seconds for load")
 	time.sleep(22)
+
+def startBehemoth():
+	# press on undertake quest
+	pressButton("A")
+	# go to by difficulty
+	pressButton("RB")
+	# default on easy diff so go down to proud
+	pressButton("UP")
+	# press on proud difficulty
+	pressButton("A")
+	# UP 6 time
+	pressButton("UP")
+	pressButton("UP")
+	pressButton("UP")
+	pressButton("UP")
+	pressButton("UP")
+	pressButton("UP")
+	# press on behemoth quest
+	pressButton("A")
+	# accept the quest
+	pressButton("A")
+	# press closed party
+	pressButton("A")
+	time.sleep(1.5)
+
+	# ready up for quest
+	pressButton("X")
+	time.sleep(0.5)
+	# ready and depart to quest
+	pressButton("A")
+
+	# sleep for 22 seconds then get into fight to account for
+	# loading + intro 
+	logger.info("Waiting 24 seconds for load")
+	time.sleep(24)
+
+def startBehemothSubsequent():
+	# press on undertake quest
+	pressButton("A")
+	# press on proud difficulty
+	pressButton("A")
+	# press on behemoth quest
+	pressButton("A")
+	# accept the quest
+	pressButton("A")
+	# press closed party
+	pressButton("A")
+	time.sleep(1.5)
+
+	# ready up for quest
+	pressButton("X")
+	time.sleep(0.5)
+	# ready and depart to quest
+	pressButton("A")
+
+	# sleep for 22 seconds then get into fight to account for
+	# loading + intro 
+	logger.info("Waiting 22 seconds for load")
+	time.sleep(24)
+
+def startZathbaVolunteers():
+	# press on undertake quest
+	pressButton("A")
+	# go to by difficulty
+	pressButton("RB")
+	# default on easy diff so go down to proud
+	pressButton("UP")
+	# press on proud difficulty
+	pressButton("A")
+
+	# UP 3 time
+	pressButton("UP")
+	pressButton("UP")
+	pressButton("UP")
+
+	# press on zathba quest
+	pressButton("A")
+	# accept the quest
+	pressButton("A")
+	# press closed party
+	pressButton("A")
+	time.sleep(1.5)
+
+	# ready up for quest
+	pressButton("X")
+	time.sleep(0.5)
+	# ready and depart to quest
+	pressButton("A")
+
+	# sleep for 22 seconds then get into fight to account for
+	# loading + intro 
+	logger.info("Waiting 24 seconds for load")
+	time.sleep(24)
+
+def startZathbaVolunteersSubsequent():
+	# press on undertake quest
+	pressButton("A")
+	# press on proud difficulty
+	pressButton("A")
+	# press on zathba quest
+	pressButton("A")
+	# accept the quest
+	pressButton("A")
+	# press closed party
+	pressButton("A")
+	time.sleep(1.5)
+
+	# ready up for quest
+	pressButton("X")
+	time.sleep(0.5)
+	# ready and depart to quest
+	pressButton("A")
+
+	# sleep for 22 seconds then get into fight to account for
+	# loading + intro 
+	logger.info("Waiting 22 seconds for load")
+	time.sleep(24)
+
 
 def startProtoQuest():
 	# press on undertake quest
@@ -252,7 +521,7 @@ def startProtoQuest():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 24 seconds for load")
+	logger.info("Waiting 24 seconds for load")
 	time.sleep(24)
 
 def startProtoSubsequent():
@@ -279,7 +548,7 @@ def startProtoSubsequent():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 22 seconds for load")
+	logger.info("Waiting 22 seconds for load")
 	time.sleep(22)
 
 def startBossRush():
@@ -313,7 +582,7 @@ def startBossRush():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 24 seconds for load")
+	logger.info("Waiting 24 seconds for load")
 	time.sleep(24)
 
 def startBossRushSubsequent(boss_order):
@@ -328,21 +597,21 @@ def startBossRushSubsequent(boss_order):
 
 	# furrycane
 	if (boss_order == 0):
-		print("Furrycane cycle")
+		logger.info("Furrycane cycle")
 		pressButton("DOWN")
 	# managarmr
 	elif (boss_order == 1):
-		print("Managarmr cycle")
+		logger.info("Managarmr cycle")
 		for i in range(2):
 			pressButton("DOWN")
 	# vulkan
 	elif (boss_order == 2):
-		print("Vulkan cycle")
+		logger.info("Vulkan cycle")
 		for i in range(3):
 			pressButton("DOWN")
 	# pyet-a
 	elif (boss_order == 3 or boss_order == 4):
-		print("Pyet-A cycle")
+		logger.info("Pyet-A cycle")
 		for i in range(6):
 			pressButton("DOWN")
 		
@@ -362,7 +631,7 @@ def startBossRushSubsequent(boss_order):
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 22 seconds for load")
+	logger.info("Waiting 22 seconds for load")
 	time.sleep(22)
 
 def startTripleBossQuest():
@@ -398,7 +667,7 @@ def startTripleBossQuest():
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 24 seconds for load")
+	logger.info("Waiting 24 seconds for load")
 	time.sleep(24)
 
 def startTripleBossSubsequent(triple_boss_order):
@@ -409,22 +678,22 @@ def startTripleBossSubsequent(triple_boss_order):
 
 	# worst vacation ever
 	if (triple_boss_order == 0):
-		print("Worst vacation cycle")
+		logger.info("Worst vacation cycle")
 		for i in range(5):
 			pressButton("DOWN")
 	# trade barrier
 	elif (triple_boss_order == 1):
-		print("Trade barrier cycle")
+		logger.info("Trade barrier cycle")
 		for i in range(6):
 			pressButton("DOWN")
 	# banquet of ice
 	elif (triple_boss_order == 2):
-		print("Banquet of ice cycle")
+		logger.info("Banquet of ice cycle")
 		for i in range(8):
 			pressButton("DOWN")
 	# freer folca
 	elif (triple_boss_order == 3):
-		print("Freer folca cycle")
+		logger.info("Freer folca cycle")
 		for i in range(9):
 			pressButton("DOWN")
 		
@@ -444,20 +713,27 @@ def startTripleBossSubsequent(triple_boss_order):
 
 	# sleep for 22 seconds then get into fight to account for
 	# loading + intro 
-	print("Waiting 22 seconds for load")
+	logger.info("Waiting 22 seconds for load")
 	time.sleep(22)
 
 def lanceSpam():
 	GAMEPAD.press_button(button=BUTTON_LIST["Y"])
 	GAMEPAD.press_button(button=BUTTON_LIST["B"])
-	GAMEPAD.left_trigger_float(value_float=1.0)
+	# GAMEPAD.left_trigger_float(value_float=1.0)
 	GAMEPAD.update()
 	time.sleep(0.05)
 	GAMEPAD.release_button(button=BUTTON_LIST["Y"])
 	GAMEPAD.release_button(button=BUTTON_LIST["B"])
-	GAMEPAD.left_trigger_float(value_float=0)
+	# GAMEPAD.left_trigger_float(value_float=0)
 	GAMEPAD.update()
 	time.sleep(0.05)
+
+def walkForward():
+	GAMEPAD.left_joystick_float(x_value_float=0.0, y_value_float=1.0)
+	GAMEPAD.update()
+	time.sleep(2)
+	GAMEPAD.left_joystick_float(x_value_float=0.0, y_value_float=0.0)
+	GAMEPAD.update()
 
 def pressButtonSimultaneously(button1, button2):
 	GAMEPAD.press_button(button=BUTTON_LIST[button1])
@@ -479,7 +755,7 @@ def pressButton(xbox_button):
 
 # TODO: optimize this don't need 2
 def mashAttack(min):
-	print("Mashing Attack")
+	logger.info("Mashing Attack")
 	t_end = time.time() + 60 * min
 	while time.time() < t_end:
 		pressButton("X")
@@ -518,9 +794,9 @@ def runUp(seconds):
 	GAMEPAD.update()
 
 def teleportKnick():
-	print("Teleporting to knickknack")
+	logger.info("Teleporting to knickknack")
 	# open up the shortcut menu
-	print("Opening shortcut")
+	logger.info("Opening shortcut")
 	GAMEPAD.left_trigger_float(value_float=1.0)
 	GAMEPAD.update()
 	time.sleep(1.0)
@@ -535,7 +811,7 @@ def teleportKnick():
 	pressButton("A")
 	time.sleep(1.5)
 
-	print("Walking to knickknack")
+	logger.info("Walking to knickknack")
 	# walk 1 second up
 	moveUp(1)
 	# interact with the quest counter
@@ -545,7 +821,7 @@ def teleportKnick():
 	gambaSigils()
 
 def gambaSigils():
-	print("Gamba gamba")
+	logger.info("Gamba gamba")
 	# down 3 then down 2
 	pressButton("DOWN")
 	pressButton("DOWN")
@@ -553,175 +829,394 @@ def gambaSigils():
 	pressButton("A")
 	pressButton("DOWN")
 	pressButton("DOWN")
-	print("TIME TO GAMBA for 2 MIN")
-	mashAButton(120)
+	logger.info("TIME TO GAMBA for 2 MIN")
+	# mashAButton(120)
+	pressButton("A")
+	pressButton("A")
+	pressButton("DOWN")
+	pressButton("A")
+	pressButton("A")
+	time.sleep(5)
 
 	# done with gamba
-	mashButton("B", 6)
+	mashButton("B", 3)
 	time.sleep(2)
 
 def printTest():
 	while(not IS_FIGHT_FINISHED):
-		print("Fight not finished")
+		logger.info("Fight not finished")
 		time.sleep(1)
-	print("Fight finished")
+	logger.info("Fight finished")
 		
 
 def isTest():
-	print("Testing image serach")
-	pos = imagesearch_loop("./Granblue ImageSearch/SBA_ready.png", timesample=5, precision=0.75)
-	print("position : ", pos[0], pos[1])
+	logger.info("Testing image serach")
+	pos = imagesearch_loop("./Granblue ImageSearch/battle_results.png", timesample=1, precision=0.75)
+	logger.info("position : ", pos[0], pos[1])
 	global IS_FIGHT_FINISHED 
 	IS_FIGHT_FINISHED = True
 
 def luciAttackSpam():
 	while(not IS_FIGHT_FINISHED):
-		lanceSpam()
-		pressButtonSimultaneously("LSB", "RSB")
+		# every 25 minutes press A
+		i = 0
+		t_end = time.time() + 60 * 15
+		# while time.time() < t_end:
+		# i = 3 is a second I think
+		while (i < 5000 and not IS_FIGHT_FINISHED):
+			if (i % 3 == 0):
+				GAMEPAD.left_trigger_float(value_float=1.0)
+				GAMEPAD.update()
+				time.sleep(0.05)
+				GAMEPAD.left_trigger_float(value_float=0)
+				GAMEPAD.update()
+				time.sleep(0.05)
+			walkForward()
+			# lanceSpam()
+			# pressButtonSimultaneously("LSB", "RSB")
+			i = i + 1
+		logger.info("Should be done with fight since battle_results detected.")
+		# for i in range(5):
+		# 	pos = imagesearch("./Granblue ImageSearch/battle_results.png", precision=0.75)
+		# 	time.sleep(1)
+		# if pos[0] != -1:
+		logger.info("Pressing LEFT in case stuck\n")
+		pressButton("LEFT")
+	logger.info("Stop moving. Battle should be over!")
+
+def checkBattleScreen():
+	logger.info("Checking battle results screen\n")
+	global IS_FIGHT_FINISHED
+	while(not IS_FIGHT_FINISHED or pos[0] == -1):
+		pos = imagesearch("./Granblue ImageSearch/battle_results.png", precision=0.75)
+		time.sleep(5)
+	IS_FIGHT_FINISHED = True
+	logger.info("Detected battle results screen")
 
 def protoStart():
 	# walk to the left and hold block
-	print("Walking to the left side of the ship for 5 seconds and holding block\n")
+	logger.info("Walking to the left side of the ship for 5 seconds and holding block\n")
 	GAMEPAD.left_joystick_float(x_value_float=-1.0, y_value_float=0.0)
 	GAMEPAD.update()
 	time.sleep(5)
 	GAMEPAD.left_joystick_float(x_value_float=0.0, y_value_float=0.0)
 	GAMEPAD.update()
-	print("Move up 2 seconds")
+	logger.info("Move up 2 seconds")
 	moveUp(2)
 	hold_block_mash_b()
 
 def hold_block_mash_b():
-	print("Holding block and mashing B until fight is over")
+	logger.info("Holding block and mashing B until fight is over")
 	while(not IS_FIGHT_FINISHED):
 		GAMEPAD.press_button(button=BUTTON_LIST["LB"])
 		GAMEPAD.left_joystick_float(x_value_float=-1.0, y_value_float=1.0)
 		GAMEPAD.update()
 		pressButton("B")
 		time.sleep(1)
-	print("Letting go of block. Fight is over")
+	logger.info("Letting go of block. Fight is over")
 	GAMEPAD.release_button(button=BUTTON_LIST["LB"])
 	GAMEPAD.left_joystick_float(x_value_float=0.0, y_value_float=0.0)
 	GAMEPAD.update()
 
 def holdBlock():
-	print("Holding block until fight is over")
+	logger.info("Holding block until fight is over")
 	while(not IS_FIGHT_FINISHED):
 		GAMEPAD.press_button(button=BUTTON_LIST["LB"])
 		GAMEPAD.update()
-	print("Letting go of block. Fight is over")
+	logger.info("Letting go of block. Fight is over")
 	GAMEPAD.release_button(button=BUTTON_LIST["LB"])
 	GAMEPAD.update()
 
 def checkQuestFinished():
-	print("Checking if we are on battle results/post results screen every 1.0 seconds")
-	pos = imagesearch("./Granblue ImageSearch/collect_treasure.png", precision=0.75)
-	time.sleep(1)
-	while(pos[0] == -1):
-		# print('searching')
+	logger.info("Checking if we are on battle results screen every 1.0 seconds")
+	# pos = imagesearch("./Granblue ImageSearch/collect_treasure.png", precision=0.75)
+	pos = imagesearch_loop("./Granblue ImageSearch/battle_results.png", timesample=1.0, precision=0.75)
+	time.sleep(1.5)
+	# time.sleep(1)
+	# while(pos[0] == -1):
+		# logger.info('searching')
 		# pos = imagesearch("./Granblue ImageSearch/battle_results.png", precision=0.75)
 		# time.sleep(2)
-		# print("2nd search")
-		pos = imagesearch("./Granblue ImageSearch/post_battle_status.png", precision=0.75)
-		time.sleep(1.5)
+		# logger.info("2nd search")
 		# time.sleep(2)
 	#pos = imagesearch_loop("./Granblue ImageSearch/collect_treasure.png", timesample=1.0, precision=0.8)
-	print("Battle results/Failure screen detected.")
+	logger.info("Battle results/Failure screen detected.")
 	global IS_FIGHT_FINISHED
 	IS_FIGHT_FINISHED = True
 
 	# TODO - if fail then handle
 
-def walkAndCollectTreaures():
-	print("Attempting to collect all tresures within 30 seconds")
-	print("Going to use 3 lance heavy attacks with the sigil")
-	for i in range(3):
-		pressButton("Y")
-	print("Walking up for a second")
-	moveUp(1)
-	print("Spamming B to collect treasure")
-	mashButton("B", 1)
-	
-	print("Move left and spam B")
-	# getting 2nd chest 
-	# TODO: optimize this 
-	GAMEPAD.left_joystick_float(x_value_float=-1.0, y_value_float=0.0)
-	GAMEPAD.update()
+def tradeSigils():
+	logger.info("Gamba sigils")
+	# press knickknack vouchers
+	pressButton("DOWN")
+	pressButton("DOWN")
+	pressButton("A")
+	# select trade sigils
+	pressButton("DOWN")
+	pressButton("A")
+	# press sort/trade all
+	pressButton("BACK")
+	pressButton("X")
+	pressButton("DOWN")
+	pressButton("A")
+	# select trade
+	pressButton("A")
+	pressButton("DOWN")
+	# press OK
+	pressButton("A")
+	time.sleep(0.5)
+	# back to menu
+	# TODO: why does it need an extra b input here???
+	pressButton("B")
+	pressButton("B")
+	pressButton("B")
 	time.sleep(1)
-	GAMEPAD.left_joystick_float(x_value_float=0.0, y_value_float=0.0)
-	GAMEPAD.update()
-	mashButton("B", 1)
-
-	# getting 1st chest
-	GAMEPAD.left_joystick_float(x_value_float=-1.0, y_value_float=0.0)
-	GAMEPAD.update()
-	time.sleep(1)
-	GAMEPAD.left_joystick_float(x_value_float=0.0, y_value_float=0.0)
-	GAMEPAD.update()
-	mashButton("B", 1)
-
-	# walk over to the 4th and 5th chest holding right and spamming B for 8 seconds
-	GAMEPAD.left_joystick_float(x_value_float=1.0, y_value_float=0.0)
-	GAMEPAD.update()
-	mashButton("B", 8)
-	GAMEPAD.left_joystick_float(x_value_float=0.0, y_value_float=0.0)
-	GAMEPAD.update()
+	# transmute sigils
+	pressButton("DOWN")
+	pressButton("A")
+	pressButton("DOWN")
+	pressButton("DOWN")
+	logger.info("TIME TO GAMBA SIGILS")
 	
-	print("Hopefully all chests have been collected. Now to the battle results screen.")
+	for i in range(2):
+		# select trade
+		pressButton("A")
+		pressButton("A")
+		pressButton("DOWN")
+		pressButton("A")
+		pressButton("A")
+		time.sleep(5)
+
+		# close results
+		pressButton("B")
+	# back to menu
+	pressButton("B")
+	time.sleep(1)
+	while(True):
+		# go up to knick vouchers
+		pressButton("UP")
+		pressButton("A")
+		# select trade sigils
+		pressButton("A")
+		# press sort/trade all
+		pressButton("BACK")
+		pressButton("X")
+		pressButton("DOWN")
+		pressButton("A")
+		# select trade
+		pressButton("A")
+		pressButton("DOWN")
+		# press OK
+		pressButton("A")
+		time.sleep(0.5)
+		# back to menu
+		pressButton("B")
+		pressButton("B")
+		pressButton("B")
+		time.sleep(1)
+		# transmute sigils
+		pressButton("DOWN")
+		pressButton("A")
+		logger.info("TIME TO GAMBA SIGILS")
+		for i in range(2):
+			# select trade
+			pressButton("A")
+			pressButton("A")
+			pressButton("DOWN")
+			pressButton("A")
+			pressButton("A")
+			time.sleep(5)
+
+			# close results
+			pressButton("B")
+		# back to menu
+		pressButton("B")
+		time.sleep(1)
+
+
+def tradeWrightstones():
+	# assuming in siero's menu already
+	pressButton("DOWN")
+	pressButton("DOWN")
+	# enter knickknack vouchers
+	pressButton("A")
+
+	pressButton("DOWN")
+	pressButton("DOWN")
+	# trade wrightstones
+	pressButton("A")
+
+	# select up to 20 wrightstones to trade
+	for i in range(20):
+		pressButton("A")
+		pressButton("DOWN")
+
+	# initiate the trade
+	pressButton("X")
+	pressButton("DOWN")
+	pressButton("A")
+	pressButton("A")
+	pressButton("DOWN")
+	pressButton("A")
+	pressButton("A")
+
+	# exit back to the siero's menu
+	pressButton("B")
+	pressButton("B")
+	time.sleep(1)
+
+	# select transmute sigils
+	pressButton("DOWN")
+	pressButton("A")
+	# go down 2 to level 3 transmute
+	# trade 30 vouchers
+	pressButton("DOWN")
+	pressButton("DOWN")
+	pressButton("A")
+	pressButton("A")
+	pressButton("DOWN")
+	pressButton("A")
+	pressButton("A")
+	time.sleep(4)
+	# get off sigil results screen
+	pressButton("A")
+	
+	# go back to trade wrightstones
+	pressButton("B")
+	time.sleep(1)
+	pressButton("UP")
+	pressButton("A")
+	# select trade wrightstones
+	pressButton("A")
+
+	# start looping here
+	while(True):
+		for i in range(20):
+			pressButton("A")
+			pressButton("DOWN")
+
+		# initiate the trade
+		pressButton("X")
+		pressButton("DOWN")
+		pressButton("A")
+		pressButton("A")
+		pressButton("DOWN")
+		pressButton("A")
+		pressButton("A")
+
+		# exit back to the siero's menu
+		pressButton("B")
+		pressButton("B")
+		time.sleep(1)
+		# select transmute sigils
+		pressButton("DOWN")
+		pressButton("A")
+		
+		# transmute level 3 sigils
+		pressButton("A")
+		pressButton("A")
+		pressButton("DOWN")
+		pressButton("A")
+		pressButton("A")
+		time.sleep(4)
+		# get off sigil results screen
+		pressButton("A")
+
+		# go back to trade wrightstones
+		pressButton("B")
+		time.sleep(1)
+		pressButton("UP")
+		pressButton("A")
+		# select trade wrightstones
+		pressButton("A")
+		time.sleep(1)
 
 if __name__ == '__main__':
 	# Collect all event until released
 	# wait 3 seconds before starting
 	# press a button to wake the device up
-	print("Ranged main character required to be optimal")
-	print("Recommended to set the game to 720p 30fps if you go afk")
-	print("Make sure the quest board is in default state before running.")
-	print("Choose a farm. In the terminal, type 1 then press enter to farm slimes for example\n")
+	logger.info("Ranged main character required to be optimal")
+	logger.info("Recommended to set the game to 720p 30fps if you go afk")
+	logger.info("Make sure the quest board is in default state before running.")
+	logger.info("Choose a farm. In the terminal, type 1 then press enter to farm slimes for example\n")
 	farm_mode = input("Slimepede Farm [1] | Fortitude Crystal Farm (INEFFICIENT) [2] | TEST SCREEN CAPTURE [3]\n"
 					  "Lucilius Farm [4] | Boss Rush (Terminus mats) [5] | Proto Bahamut Farm [6]\n"
-					  "Triple Bosses (Silver centrum + ex refiniums + L crystals) [7]\n\n")
+					  "Triple Bosses (Silver centrum + ex refiniums + L crystals) [7] | Behemoth [8]\n"
+					  "Trade Wrightstones [9] | Trade Sigils [0] | Spam Single Quest [20]\n\n")
 	if farm_mode == '1':
-		print("Starting Slimepede Farm")
+		logger.info("Starting Slimepede Farm")
 	elif farm_mode == '2':
-		print("Starting Fortitude Crystal Farm")
+		logger.info("Starting Fortitude Crystal Farm")
 	elif farm_mode =='3':
-		print("Testing screen capture for user")
-		print("Sleeping for 3 seconds for you to alt tab to game")
+		logger.info("Testing screen capture for user")
+		logger.info("Sleeping for 3 seconds for you to alt tab to game")
 		time.sleep(3)
-		print("Attempting to detect the main menu")
+		logger.info("Attempting to detect the main menu")
 		pos = imagesearch_loop("./Granblue ImageSearch/main_menu.png", timesample=1.0, precision=0.75)
-		print("Detected the main menu we good.\n")
+		logger.info("Detected the main menu we good.\n")
 		
-		print("Start a mission and test if this can detect when it starts and the post battle screen\n")
+		logger.info("Start a mission and test if this can detect when it starts and the post battle screen\n")
 		time.sleep(5)
-		print("Begin checking for start of quest. Looking for the time left at top right corner every 1 second\n")
+		logger.info("Begin checking for start of quest. Looking for the time left at top right corner every 1 second\n")
 		time.sleep(2)
 		pos = imagesearch_loop("./Granblue ImageSearch/time_left.png", timesample=1.0, precision=0.75)
-		print("Time left detected. Will check for post battle results screen now")
+		logger.info("Time left detected. Will check for post battle results screen now")
 		time.sleep(3)
 		pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=1.0, precision=0.75)
-		print("Post battle result screen detected. You are good to go.\n\n")
-		print("EXIT OUT AND RESTART PROGRAM\n")
+		logger.info("Post battle result screen detected. You are good to go.\n\n")
+		logger.info("EXIT OUT AND RESTART PROGRAM\n")
 		time.sleep(5)
 
 
 	elif farm_mode == '4':
-		print("Starting Luci farm")
+		logger.info("Starting Luci farm")
 	elif farm_mode == '5':
-		print("Starting boss rush (Furycane > Managarmr > Vulkan > Pyet-A (2x))")
+		logger.info("Starting boss rush (Furycane > Managarmr > Vulkan > Pyet-A (2x))")
 	elif farm_mode == '6':
-		print("Starting proto farm")
+		logger.info("Starting proto farm")
 	elif farm_mode == '7':
-		print("Starting triple bosses (Worst vacation > trade > banquent > freer)")
+		logger.info("Starting triple bosses (Worst vacation > trade > banquent > freer)")
+	elif farm_mode == '8':
+		logger.info('Starting behenmoth')
 	elif farm_mode == '9':
-		print("testing something")
-		checkQuestFinished()
+		logger.info("testing trading wrightstones")
+		# checkQuestFinished()
+		logger.info("Sleeping for 3 seconds to alt tab")
+		time.sleep(3)
+		pressButton("A")
+		pressButton("A")
+		time.sleep(1)
+		pressButton("Y")
+		time.sleep(2)
+		# tradeWrightstones()
+	elif farm_mode == '11':
+		logger.info("Starting berserker echo farm")
+
+	elif farm_mode == '15':
+		logger.info("Starting new slime farm")
+	elif farm_mode == '16':
+		logger.info("Starting the world farm")
+
+	elif farm_mode == '0':
+		logger.info("testing trading sigils")
+		# checkQuestFinished()
+		logger.info("Sleeping for 3 seconds to alt tab")
+		time.sleep(3)
+		pressButton("A")
+		pressButton("A")
+		time.sleep(1)
+		pressButton("Y")
+		time.sleep(2)
+		tradeSigils()
+	elif farm_mode == '20':
+		logger.info("Spamming one quest over and over!")
 	else:
-		print("invalid buh")
+		logger.info("invalid buh")
 	
-	print("Waiting 5 seconds to alt tab into the game")
+	logger.info("Waiting 5 seconds to alt tab into the game")
 	time.sleep(5)
-	print("Button checking")
+	logger.info("Button checking")
 	pressButton("A")
 	pressButton("A")
 
@@ -731,22 +1226,25 @@ if __name__ == '__main__':
 	boss_order = 0
 	triple_boss_order = 0
 	while True:
-		print("Back in town #" + str(full_run))
-		# print("Boss order: " + str(boss_order))
-		print("Waiting 10 seconds to account for loads")
-		# sleep 10 seconds to account for load times on repeat
-		time.sleep(10)
+		if farm_mode != '20':
+			logger.info("Back in town #" + str(full_run))
+			# logger.info("Boss order: " + str(boss_order))
+			logger.info("Waiting 10 seconds to account for loads")
+			# sleep 10 seconds to account for load times on repeat
+			time.sleep(10)
 		if (total_runs % 20 == 0) and (total_runs != 0):
-			print("Been 30 runs TIME TO GAMBA")
+			logger.info("Been 30 runs TIME TO GAMBA")
 			teleportKnick()
 		if (triple_boss_order == 4):
-			print("Resetting triple boss order")
+			logger.info("Resetting triple boss order")
 			triple_boss_order = 0
 		if (boss_order == 5):
-			print("Resetting boss order so it loops")
+			logger.info("Resetting boss order so it loops")
 			boss_order = 0
-		
-		teleportToQuest()
+
+		if farm_mode != '20':
+			teleportToQuest()
+			
 		if farm_mode == '1':
 			if full_run < 1:
 				startSlimeQuest()
@@ -778,21 +1276,41 @@ if __name__ == '__main__':
 				startTripleBossQuest()
 			else:
 				startTripleBossSubsequent(triple_boss_order)
+		elif farm_mode == '8':
+			if full_run < 1:
+				startBehemoth()
+			else:
+				startBehemothSubsequent()
+		elif farm_mode == '11':
+			if full_run < 1:
+				startZathbaVolunteers()
+			else:
+				startZathbaVolunteersSubsequent()
+		elif farm_mode == '15':
+			if full_run < 1:
+				startNewSlimeQuest()
+			else:
+				startNewSlimeSubsequent()
+		elif farm_mode == '16':
+			if full_run < 1:
+				startWorldQuest()
+			else:
+				startWorldSubsequentQuest()
 
-		if farm_mode == '1' or farm_mode == '2':	
-			print("Starting Quest")
+		if farm_mode == '1' or farm_mode == '2' or farm_mode == '15':	
+			logger.info("Starting Quest")
 			now = datetime.datetime.now()
-			print("Current date and time : ")
-			print(now.strftime("%Y-%m-%d %H:%M:%S"))
-			print("Moving up 5 seconds")
+			logger.info("Current date and time : ")
+			logger.info(now.strftime("%Y-%m-%d %H:%M:%S"))
+			logger.info("Moving up 5 seconds")
 			runUp(5)
-			if farm_mode == '1':
+			if farm_mode == '1' or farm_mode == '15':
 				mashAttack(2.99)
 			elif farm_mode == '2':
 				mashAttack(3.99)
 			total_runs = total_runs + 1
-			print("Quest Complete")
-			print("Completed fight #" + str(total_runs))
+			logger.info("Quest Complete")
+			logger.info("Completed fight #" + str(total_runs))
 			# 0:00 (end of quest) takes 20 seconds to get to
 			# results screen -- not sure about pose time
 			time.sleep(20)
@@ -802,142 +1320,203 @@ if __name__ == '__main__':
 			# 60 seconds for 2nd battle screen
 			# press repeat quest and accept
 			time.sleep(10)
-			print("Repeating")
+			logger.info("Repeating")
 			pressButton("X")
 			pressButton("A")
 			# click through and repeat
-			print("Continuing")
+			logger.info("Continuing")
 			pressButton("A")
 			pressButton("A")
-			print("Now loading")
+			logger.info("Now loading")
 			# loop through 9 more times for the quest
 			i = 0
 			while i < 9:
 				# wait for time to load level
-				time.sleep(16)
+				time.sleep(10)
 				#TODO: This is +1 higher than it actually is
-				print("Done loading. Starting fight")
+				logger.info("Done loading. Starting fight")
 				now = datetime.datetime.now()
-				print("Current date and time : ")
-				print(now.strftime("%Y-%m-%d %H:%M:%S"))
-				print("Moving up 5 seconds")
+				logger.info("Current date and time : ")
+				logger.info(now.strftime("%Y-%m-%d %H:%M:%S"))
+				logger.info("Moving up 5 seconds")
 				runUp(5)
-				if farm_mode == '1':
+				if farm_mode == '1' or farm_mode == '15':
 					mashAttack(2.99)
 				elif farm_mode == '2':
 					mashAttack(3.99)
 				total_runs = total_runs + 1
-				print("Quest #" + str(total_runs) + " Complete. Waiting 30 seconds")
+				logger.info("Quest #" + str(total_runs) + " Complete. Waiting 30 seconds")
 				# end of level now wait for battle results screen
 				time.sleep(30)
 				# mash A to get through results screen faster
-				print("Mashing A to go fast\n")
+				logger.info("Mashing A to go fast\n")
 				mashAButton(8)
 				i = i + 1
 			full_run = full_run + 1
 		
-		elif farm_mode == '4':
-			print("Actually starting luci")
+		elif farm_mode == '4' or farm_mode == '8' or farm_mode == '11' or farm_mode == '16':
+			logger.info("Actually starting luci/behemoth/zathba/world")
 			i = 0
 			while i < 10:
-				print("Starting Luci. Look for quest timer every half second")
+				logger.info("Starting Luci/behemoth/World. Look for quest timer every half second")
 				pos = imagesearch_loop("./Granblue ImageSearch/time_left.png", timesample=0.5, precision=0.75)
 				now = datetime.datetime.now()
-				print("Current date and time : ")
-				print(now.strftime("%Y-%m-%d %H:%M:%S"))
-				print("Quest timer detected at: ", pos[0], pos[1])
-				print("Starting fight")
+				logger.info("Quest timer detected")
+				logger.info("Starting fight")
 
 				# reset pos and keep looping
 				#pos.clear()
 
-				print("Creating MultiThreads")
+				logger.info("Creating MultiThreads")
 				luciAttackThread = threading.Thread(target=luciAttackSpam)
+				luciBattleScreen = threading.Thread(target=checkBattleScreen)
 				isQuestFinishedThread = threading.Thread(target=checkQuestFinished)
 				luciAttackThread.start()
+				# luciBattleScreen.start()
 				isQuestFinishedThread.start()
 
 				luciAttackThread.join()
+				# luciBattleScreen.join()
 				isQuestFinishedThread.join()
 				#pos.clear()
 
 				# TODO - walk and collect the chests
 				# TODO - not checking for treasure screen
 
-				# print("Detected Quest ending timer to collect treasure. Waiting 30 seconds for results screen.")
+				# logger.info("Detected Quest ending timer to collect treasure. Waiting 30 seconds for results screen.")
 
 				#walkAndCollectTreaures()
 
 				# first completion/fail repeat the quest
 				if i == 0:
-					# print("Now we wait 1 minute to get to post battle results screen.")
+					# logger.info("Now we wait 1 minute to get to post battle results screen.")
 					# time.sleep(60)
-					print("Searching for post battle screen (again if fail)")
+					# logger.info("Searching for post battle screen (again if fail)")
 
-					pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
-					print("Post battle results screen detected.")
+					# pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
+					logger.info("Post battle results screen detected.")
 					total_runs = total_runs + 1
-					print("Quest #" + str(total_runs) + " Complete.\n")
+					logger.info("Quest #" + str(total_runs) + " Complete.\n")
 
 					time.sleep(5)
-					print("Repeating the quest another 9 times.")
+					logger.info("Repeating the quest another 9 times.")
+					# testing up button twice in case of buffer?
+					logger.info("TESTING UP BUTTON TWICE")
+					pressButton("UP")
+					pressButton("UP")
+					time.sleep(1)
 					pressButton("X")
-					time.sleep(0.5)
+					time.sleep(1)
 					pressButton("A")
 					# click through and repeat
-					print("Continuing")
+					logger.info("Continuing")
 					pressButton("A")
 					pressButton("A")
-					print("Now waiting 10 seconds for load")
+					logger.info("Now waiting 10 seconds for load")
 					time.sleep(10)
 					i = i + 1
 					IS_FIGHT_FINISHED = False
 				
 				# 2 - 10 quests should auto repeat
 				else:
-					# print("Looking for battle results screen every second")
+					# logger.info("Looking for battle results screen every second")
 					# pos = imagesearch_loop("./Granblue ImageSearch/battle_results.png", timesample=1, precision=0.8)
-					# print("Battle results screen detected.")
-					print("Searching for post battle screen (again if fail)")
+					# logger.info("Battle results screen detected.")
+					logger.info("Searching for post battle screen (again if fail)")
 					pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
-					print("Post battle results screen detected.")
+					logger.info("Post battle results screen detected.")
 
 					total_runs = total_runs + 1
-					print("Quest #" + str(total_runs) + " Complete.\n")
+					logger.info("Quest #" + str(total_runs) + " Complete.\n")
 					
 					time.sleep(5)
 					# mash A to get through results screen faster
-					print("Mashing A to go fast\n")
+					logger.info("Mashing A to go fast\n")
 					mashAButton(8)
-					print("Loading 10 seconds to wait")
+					logger.info("Loading 10 seconds to wait")
 					time.sleep(10)
 					i = i + 1
 					IS_FIGHT_FINISHED = False
 			full_run = full_run + 1
+		
+		elif farm_mode == '20':
+			i = 0
+			while i < 500:
+				logger.info("Starting a quest and just repeating. Look for quest timer every half second")
+				pos = imagesearch_loop("./Granblue ImageSearch/time_left.png", timesample=0.5, precision=0.75)
+				now = datetime.datetime.now()
+				logger.info("Quest timer detected)")
+				logger.info("Starting fight")
+
+				# reset pos and keep looping
+				#pos.clear()
+
+				logger.info("Creating MultiThreads")
+				luciAttackThread = threading.Thread(target=luciAttackSpam)
+				# luciBattleScreen = threading.Thread(target=checkBattleScreen)
+				isQuestFinishedThread = threading.Thread(target=checkQuestFinished)
+				luciAttackThread.start()
+				# luciBattleScreen.start()
+				isQuestFinishedThread.start()
+
+				luciAttackThread.join()
+				# luciBattleScreen.join()
+				isQuestFinishedThread.join()
+				
+				
+				# logger.info("Searching for post battle screen (again if fail)")
+				logger.info("Checking for post_battle_status screen every 1.0 seconds")
+				pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
+				logger.info("Post battle results screen detected.")
+
+				total_runs = total_runs + 1
+				logger.info("Quest #" + str(total_runs) + " Complete.\n")
+				
+				time.sleep(3)
+				if i == 0:
+					logger.info("First quest. Pressing repeat quest")
+					logger.info("Trying to press X AND A")
+					pressButton("X")
+					time.sleep(1)
+					pressButton("A")
+				else:
+					logger.info("Trying to press UP AND A")
+					pressButton("UP")
+					time.sleep(1)
+					pressButton("A")
+				# mash A to get through results screen faster
+				# logger.info("Mashing A to go fast\n")
+				mashAButton(8)
+				# pressButton("A")
+				logger.info("Loading 10 seconds to wait")
+				time.sleep(10)
+				i = i + 1
+				IS_FIGHT_FINISHED = False
+
 
 		elif farm_mode == '5' or farm_mode == '6' or farm_mode == '7':
 			if farm_mode == '5':
-				print("Boss rush time")
+				logger.info("Boss rush time")
 			if farm_mode == '6':
-				print("Proto time")
+				logger.info("Proto time")
 			if farm_mode == '7':
-				print("Triple boss time")
+				logger.info("Triple boss time")
 			i = 0
 			while i < 10:
 				if farm_mode == '5':
-					print("Starting boss rush. Look for quest timer every half second")
+					logger.info("Starting boss rush. Look for quest timer every half second")
 				if farm_mode == '6':
-					print("Starting proto. Look for quest timer every half second")
+					logger.info("Starting proto. Look for quest timer every half second")
 				if farm_mode == '7':
-					print("Starting triple bosses. Look for quest timer every half second")
+					logger.info("Starting triple bosses. Look for quest timer every half second")
 				pos = imagesearch_loop("./Granblue ImageSearch/time_left.png", timesample=0.5, precision=0.75)
-				print("Quest timer detected at: ", pos[0], pos[1])
-				print("Starting fight")
+				logger.info("Quest timer detected at: ", pos[0], pos[1])
+				logger.info("Starting fight")
 				now = datetime.datetime.now()
-				print("Current date and time : ")
-				print(now.strftime("%Y-%m-%d %H:%M:%S"))
+				logger.info("Current date and time : ")
+				logger.info(now.strftime("%Y-%m-%d %H:%M:%S"))
 
-				# print("Creating MultiThreads")
+				# logger.info("Creating MultiThreads")
 				if farm_mode == '6':
 					protoStartThread = threading.Thread(target=protoStart)
 					isQuestFinishedThread = threading.Thread(target=checkQuestFinished)
@@ -957,41 +1536,41 @@ if __name__ == '__main__':
 
 				# first completion/fail repeat the quest
 				if i == 0:
-					print("Searching for post battle screen (again if fail)")
+					logger.info("Searching for post battle screen (again if fail)")
 
 					pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
-					print("Post battle results screen detected.")
+					logger.info("Post battle results screen detected.")
 					total_runs = total_runs + 1
-					print("Quest #" + str(total_runs) + " Complete.\n")
+					logger.info("Quest #" + str(total_runs) + " Complete.\n")
 
 					time.sleep(5)
-					print("Repeating the quest another 9 times.")
+					logger.info("Repeating the quest another 9 times.")
 					pressButton("X")
 					time.sleep(0.5)
 					pressButton("A")
 					# click through and repeat
-					print("Continuing")
+					logger.info("Continuing")
 					pressButton("A")
 					pressButton("A")
-					print("Now waiting 10 seconds for load\n")
+					logger.info("Now waiting 10 seconds for load\n")
 					time.sleep(10)
 					i = i + 1
 					IS_FIGHT_FINISHED = False
 				
 				# 2 - 10 quests should auto repeat
 				else:
-					print("Searching for post battle screen (again if fail)")
+					logger.info("Searching for post battle screen (again if fail)")
 					pos = imagesearch_loop("./Granblue ImageSearch/post_battle_status.png", timesample=0.5, precision=0.75)
-					print("Post battle results screen detected.")
+					logger.info("Post battle results screen detected.")
 
 					total_runs = total_runs + 1
-					print("Quest #" + str(total_runs) + " Complete.\n")
+					logger.info("Quest #" + str(total_runs) + " Complete.\n")
 					
 					time.sleep(5)
 					# mash A to get through results screen faster
-					print("Mashing A to go fast\n")
+					logger.info("Mashing A to go fast\n")
 					mashAButton(8)
-					print("Loading 10 seconds to wait\n")
+					logger.info("Loading 10 seconds to wait\n")
 					time.sleep(10)
 					i = i + 1
 					IS_FIGHT_FINISHED = False
